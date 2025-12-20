@@ -3,8 +3,8 @@
 		"width": 432,
 		"height": 198,
 		"order": 3,
-		"offsetX": -251,
-		"offsetY": -442,
+		"offsetX": -264,
+		"offsetY": -412,
 		"enabled": true
 	},
 	"hiCard": {
@@ -37,8 +37,8 @@
 		"height": 74,
 		"offset": 120,
 		"order": 6,
-		"offsetX": -673,
-		"offsetY": 242,
+		"offsetX": -658,
+		"offsetY": 225,
 		"enabled": true
 	},
 	"socialButtons": {
@@ -77,8 +77,8 @@
 		"width": 314,
 		"height": 473,
 		"order": 2,
-		"offsetX": -673,
-		"offsetY": -288,
+		"offsetX": -668,
+		"offsetY": -327,
 		"enabled": true
 	},
 	"likePosition": {
