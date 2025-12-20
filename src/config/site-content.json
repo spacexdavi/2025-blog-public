@@ -1,6 +1,6 @@
 {
 	"meta": {
-		"title": "Don't Panic",
+		"title": "Spacex_david",
 		"description": "Spacex_david 的个人博客，记录前端开发、探索、笔记。",
 		"username": "Spacex_david"
 	},
@@ -19,19 +19,11 @@
 	],
 	"artImages": [
 		{
-			"id": "cat",
-			"url": "/images/art/cat.png"
-		},
-		{
-			"id": "a46372ff45bc5524",
-			"url": "/images/art/a46372ff45bc5524.jpg"
-		},
-		{
 			"id": "28406c60b9623347",
 			"url": "/images/art/28406c60b9623347.webp"
 		}
 	],
-	"currentArtImageId": "cat",
+	"currentArtImageId": "28406c60b9623347",
 	"backgroundImages": [
 		{
 			"id": "",
@@ -61,7 +53,7 @@
 		{
 			"id": "email",
 			"type": "email",
-			"value": "yysuni1001@gmail.com",
+			"value": "davidlovemi@outlook.com",
 			"label": "",
 			"order": 1
 		}
