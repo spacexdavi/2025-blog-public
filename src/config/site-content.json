@@ -2,7 +2,7 @@
 	"meta": {
 		"title": "Don't Panic",
 		"description": "Spacex_david 的个人博客，记录前端开发、探索、笔记。",
-		"username": "Suni"
+		"username": "Spacex_david"
 	},
 	"theme": {
 		"colorBrand": "#de4331",
@@ -37,9 +37,13 @@
 		{
 			"id": "",
 			"url": ""
+		},
+		{
+			"id": "5844e596161aa7f7",
+			"url": "/images/background/5844e596161aa7f7.png"
 		}
 	],
-	"currentBackgroundImageId": "",
+	"currentBackgroundImageId": "5844e596161aa7f7",
 	"socialButtons": [
 		{
 			"id": "github",
@@ -63,7 +67,7 @@
 			"order": 1
 		}
 	],
-	"clockShowSeconds": false,
+	"clockShowSeconds": true,
 	"summaryInContent": false,
 	"isCachePem": false,
 	"hideEditButton": false,
