@@ -16,20 +16,20 @@
 		"enabled": true
 	},
 	"clockCard": {
-		"width": 330,
-		"height": 176,
+		"width": 416,
+		"height": 179,
 		"offset": 92,
 		"order": 4,
-		"offsetX": 257,
-		"offsetY": -338,
+		"offsetX": 256,
+		"offsetY": -351,
 		"enabled": true
 	},
 	"calendarCard": {
-		"width": 386,
-		"height": 326,
+		"width": 411,
+		"height": 327,
 		"order": 5,
 		"offsetX": 265,
-		"offsetY": -116,
+		"offsetY": -110,
 		"enabled": true
 	},
 	"musicCard": {
@@ -50,8 +50,8 @@
 		"enabled": true
 	},
 	"shareCard": {
-		"width": 349,
-		"height": 173,
+		"width": 410,
+		"height": 165,
 		"order": 7,
 		"offsetX": 272,
 		"offsetY": 278,
