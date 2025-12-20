@@ -61,6 +61,13 @@
 			"value": "davidlovemi@outlook.com",
 			"label": "",
 			"order": 1
+		},
+		{
+			"id": "button-1766242721496",
+			"type": "bilibili",
+			"value": "https://space.bilibili.com/533853689",
+			"label": "bilibili",
+			"order": 3
 		}
 	],
 	"clockShowSeconds": true,
