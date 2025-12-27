@@ -1,26 +1,69 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function ClockPage() {
   const [time, setTime] = useState(new Date());
-  const [prevDigits, setPrevDigits] = useState<string[]>([]);
   const [digits, setDigits] = useState<string[]>([]);
+  const [prevDigits, setPrevDigits] = useState<string[]>([]);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
       const newTime = new Date();
-      setTime(newTime);
       const newDigits = newTime.toLocaleTimeString().split("");
       setPrevDigits(digits);
       setDigits(newDigits);
+      setTime(newTime);
     };
     updateTime();
     const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, [digits]);
 
-  // 绘制黑客帝国背景
+  // 全屏切换
+  const toggleFullscreen = () => {
+    const elem = document.getElementById("clock-root");
+    if (!document.fullscreenElement) {
+      elem?.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  // 双击退出全屏
+  useEffect(() => {
+    const elem = document.getElementById("clock-root");
+    const handleDoubleClick = () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    };
+    elem?.addEventListener("dblclick", handleDoubleClick);
+    return () => {
+      elem?.removeEventListener("dblclick", handleDoubleClick);
+    };
+  }, []);
+
+  // ESC退出全屏
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && document.fullscreenElement) {
+        document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  // 背景代码雨
   useEffect(() => {
     const canvas = document.getElementById("matrix") as HTMLCanvasElement;
     const ctx = canvas.getContext("2d")!;
@@ -37,7 +80,7 @@ export default function ClockPage() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "rgba(0,255,0,0.3)"; // 半透明绿色
+      ctx.fillStyle = "rgba(0,255,0,0.25)"; // 更淡的绿色
       ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
@@ -68,6 +111,7 @@ export default function ClockPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        background: "black",
       }}
     >
       {/* 背景 Canvas */}
@@ -81,7 +125,21 @@ export default function ClockPage() {
         }}
       ></canvas>
 
-      {/* 时钟文字（逐位渲染） */}
+      {/* 左上角导航 */}
+      <div
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          zIndex: 2,
+        }}
+      >
+        <Link href="/" style={{ color: "#00ff99", textDecoration: "none" }}>
+          ← 返回首页
+        </Link>
+      </div>
+
+      {/* 时钟文字 */}
       <div
         style={{
           fontSize: "6rem",
@@ -95,16 +153,54 @@ export default function ClockPage() {
           return (
             <span
               key={i}
-              style={{
-                transition: "filter 0.5s ease-out",
-                filter: changed ? "blur(8px)" : "blur(0px)",
-              }}
+              className={changed ? "digit-change" : ""}
+              style={{ margin: "0 2px" }}
             >
               {digit}
             </span>
           );
         })}
       </div>
+
+      {/* 右下角全屏按钮 */}
+      {!isFullscreen && (
+        <button
+          onClick={toggleFullscreen}
+          style={{
+            position: "absolute",
+            bottom: "30px",
+            right: "30px",
+            padding: "12px 24px",
+            fontSize: "1rem",
+            borderRadius: "8px",
+            border: "none",
+            background: "rgba(0, 255, 153, 0.2)",
+            color: "#00ff99",
+            cursor: "pointer",
+            backdropFilter: "blur(4px)",
+            transition: "all 0.3s ease",
+            zIndex: 2,
+          }}
+        >
+          全屏
+        </button>
+      )}
+
+      <style jsx>{`
+        .digit-change {
+          animation: blurIn 0.5s ease-out;
+        }
+        @keyframes blurIn {
+          0% {
+            filter: blur(8px);
+            opacity: 0.5;
+          }
+          100% {
+            filter: blur(0px);
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 }
