@@ -4,16 +4,21 @@ import { useEffect, useState } from "react";
 
 export default function ClockPage() {
   const [time, setTime] = useState(new Date());
-  const [animate, setAnimate] = useState(false);
+  const [prevDigits, setPrevDigits] = useState<string[]>([]);
+  const [digits, setDigits] = useState<string[]>([]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-      setAnimate(true);
-      setTimeout(() => setAnimate(false), 500); // 动画持续 0.5s
-    }, 1000);
+    const updateTime = () => {
+      const newTime = new Date();
+      setTime(newTime);
+      const newDigits = newTime.toLocaleTimeString().split("");
+      setPrevDigits(digits);
+      setDigits(newDigits);
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [digits]);
 
   // 绘制黑客帝国背景
   useEffect(() => {
@@ -29,10 +34,10 @@ export default function ClockPage() {
     for (let x = 0; x < columns; x++) drops[x] = 1;
 
     function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = "#0F0"; // 绿色
+      ctx.fillStyle = "rgba(0,255,0,0.3)"; // 半透明绿色
       ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
@@ -76,17 +81,29 @@ export default function ClockPage() {
         }}
       ></canvas>
 
-      {/* 时钟文字 */}
+      {/* 时钟文字（逐位渲染） */}
       <div
         style={{
           fontSize: "6rem",
           textShadow: "0 0 20px #00ff99",
           zIndex: 1,
-          filter: animate ? "blur(8px)" : "blur(0px)",
-          transition: "filter 0.5s ease-out",
+          display: "flex",
         }}
       >
-        {time.toLocaleTimeString()}
+        {digits.map((digit, i) => {
+          const changed = prevDigits[i] !== digit;
+          return (
+            <span
+              key={i}
+              style={{
+                transition: "filter 0.5s ease-out",
+                filter: changed ? "blur(8px)" : "blur(0px)",
+              }}
+            >
+              {digit}
+            </span>
+          );
+        })}
       </div>
     </div>
   );
