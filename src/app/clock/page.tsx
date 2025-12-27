@@ -133,20 +133,6 @@ export default function ClockPage() {
         }}
       ></canvas>
 
-      {/* 左上角导航 */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          zIndex: 10,
-        }}
-      >
-        <Link href="/" className="nav-link">
-          ← 返回首页
-        </Link>
-      </div>
-
       {/* 时钟文字 */}
       <div
         style={{
@@ -158,11 +144,9 @@ export default function ClockPage() {
       >
         {digits.map((digit, i) => {
           const changed = changedIndexes.includes(i);
-          // 用 digit + 时间戳作为 key，强制触发动画
-          const key = changed ? `${digit}-${Date.now()}` : `${digit}-${i}`;
           return (
             <span
-              key={key}
+              key={i}
               className={changed ? "digit-change" : ""}
               style={{ margin: "0 2px" }}
             >
@@ -197,11 +181,6 @@ export default function ClockPage() {
       )}
 
       <style jsx>{`
-        .nav-link {
-          color: #00ff99;
-          text-decoration: none;
-          cursor: pointer;
-        }
         .digit-change {
           animation: blurIn 0.5s ease-out;
         }
