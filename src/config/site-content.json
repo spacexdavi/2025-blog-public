@@ -29,9 +29,13 @@
 		{
 			"id": "3d83d03fb8cb3e4a",
 			"url": "/images/art/3d83d03fb8cb3e4a.jpg"
+		},
+		{
+			"id": "c7ffb027fbab08a9",
+			"url": "/images/art/c7ffb027fbab08a9.webp"
 		}
 	],
-	"currentArtImageId": "75bdaa12319fd8fc",
+	"currentArtImageId": "c7ffb027fbab08a9",
 	"backgroundImages": [
 		{
 			"id": "",
