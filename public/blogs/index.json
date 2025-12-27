@@ -1,5 +1,15 @@
 [
   {
+    "slug": "whatsnew#1",
+    "title": "网站更新",
+    "tags": [],
+    "date": "2025-12-28T01:36",
+    "summary": "关于时钟的更新",
+    "cover": "/blogs/whatsnew#1/ce46b2cee74637eb.png",
+    "hidden": false,
+    "category": "代码实现"
+  },
+  {
     "slug": "intro",
     "title": "关于本站",
     "tags": [
