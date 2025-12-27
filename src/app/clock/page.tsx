@@ -7,14 +7,22 @@ export default function ClockPage() {
   const [time, setTime] = useState(new Date());
   const [digits, setDigits] = useState<string[]>([]);
   const [prevDigits, setPrevDigits] = useState<string[]>([]);
+  const [changedIndexes, setChangedIndexes] = useState<number[]>([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
       const newTime = new Date();
       const newDigits = newTime.toLocaleTimeString().split("");
+      const changed: number[] = [];
+      newDigits.forEach((d, i) => {
+        if (digits[i] !== d) {
+          changed.push(i);
+        }
+      });
       setPrevDigits(digits);
       setDigits(newDigits);
+      setChangedIndexes(changed);
       setTime(newTime);
     };
     updateTime();
@@ -125,20 +133,6 @@ export default function ClockPage() {
         }}
       ></canvas>
 
-      {/* 左上角导航 */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          zIndex: 2,
-        }}
-      >
-        <Link href="/" style={{ color: "#00ff99", textDecoration: "none" }}>
-          ← 返回首页
-        </Link>
-      </div>
-
       {/* 时钟文字 */}
       <div
         style={{
@@ -149,7 +143,7 @@ export default function ClockPage() {
         }}
       >
         {digits.map((digit, i) => {
-          const changed = prevDigits[i] !== digit;
+          const changed = changedIndexes.includes(i);
           return (
             <span
               key={i}
