@@ -9,28 +9,7 @@
     ],
     "date": "2026-01-01T10:04",
     "summary": "我的2025年回顾",
-    "hidden": false,
-    "category": ""
-  },
-  {
-    "slug": "whatsnew",
-    "title": "网站更新",
-    "tags": [],
-    "date": "2025-12-28T01:48",
-    "summary": "时钟组件更新",
-    "cover": "/blogs/whatsnew/15a5f9ce9c68eb34.webp",
-    "hidden": false,
-    "category": ""
-  },
-  {
-    "slug": "intro",
-    "title": "关于本站",
-    "tags": [
-      "介绍"
-    ],
-    "date": "2025-12-20T20:50",
-    "summary": "本站概述",
-    "cover": "/blogs/intro/4d36b0498506d9cf.png",
+    "cover": "/blogs/2025/3ca9aa6a7807ef05.png",
     "hidden": false,
     "category": ""
   }
