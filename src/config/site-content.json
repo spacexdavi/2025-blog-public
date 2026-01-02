@@ -53,24 +53,24 @@
 	"currentBackgroundImageId": "5bcee618dbb6b70b",
 	"socialButtons": [
 		{
-			"id": "github",
-			"type": "github",
-			"value": "https://github.com/spacexdavi",
-			"label": "Github",
-			"order": 2
-		},
-		{
 			"id": "email",
 			"type": "email",
-			"value": "davidlovemi@outlook.com",
+			"value": "e@spacexdavid.cn",
 			"label": "",
 			"order": 1
 		},
 		{
 			"id": "button-1766242721496",
-			"type": "bilibili",
-			"value": "https://space.bilibili.com/533853689",
-			"label": "bilibili",
+			"type": "tg",
+			"value": "https://chat.spacexdavid.cn",
+			"label": "实时加密",
+			"order": 2
+		},
+		{
+			"id": "github",
+			"type": "github",
+			"value": "https://github.com/spacexdavi",
+			"label": "Github",
 			"order": 3
 		}
 	],
