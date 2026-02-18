@@ -6,7 +6,7 @@ const THEMES = [
   { id: "matrix", name: "黑客帝国" },
   { id: "ios-lock", name: "iOS 锁屏" },
   { id: "watch-aurora", name: "Apple Watch 极光" },
-  { id: "standby-red", name: "待机红" },
+  { id: "watch-neon-line", name: "Apple Watch 霓虹线条" }, // 替换了待机红
 ];
 
 export default function ClockPage() {
@@ -124,7 +124,7 @@ export default function ClockPage() {
         cursor: "pointer"
       }}
     >
-      {/* 极光背景 (仅在 Watch 模式显示) */}
+      {/* 极光背景 (仅在 Watch Aurora 模式显示) */}
       {currentTheme.id === "watch-aurora" && <div className="aurora-bg" />}
 
       {/* Matrix Canvas */}
@@ -167,8 +167,14 @@ export default function ClockPage() {
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap'); /* 新增，用于霓虹线条 */
 
-        .time-display { color: white; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); font-variant-numeric: tabular-nums; }
+        .time-display { 
+          color: white; 
+          transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+          font-variant-numeric: tabular-nums; 
+          text-shadow: none; /* 重置之前的 text-shadow 影响 */
+        }
         
         /* Matrix 增强：使用更科幻的字体和发光 */
         .theme-matrix .time-display { 
@@ -200,13 +206,24 @@ export default function ClockPage() {
             filter: blur(60px); opacity: 0.6;
         }
 
-        /* 待机模式：浓郁的红色氛围 */
-        .theme-standby-red .time-display {
-            font-family: "Inter", system-ui, sans-serif; 
-            font-weight: 700; font-size: 25vw;
-            color: #ff2d55; 
-            filter: drop-shadow(0 0 40px rgba(255, 45, 85, 0.6));
+        /* Apple Watch 霓虹线条 */
+        .theme-watch-neon-line .time-display {
+            font-family: 'Major Mono Display', monospace; /* 使用线条感字体 */
+            font-size: 18vw; 
+            font-weight: 400; /* 字体不宜过粗 */
+            background: linear-gradient(45deg, #FF00FF, #00FFFF, #FFFF00, #00FF00); /* 多彩渐变 */
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: neon-color-shift 8s ease infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px #00FFFF, 0 0 30px #FF00FF; /* 霓虹发光效果 */
+            letter-spacing: -5px;
         }
+        /* 隐藏秒数，因为霓虹线条风格更注重简洁 */
+        .theme-watch-neon-line .seconds {
+            display: none;
+        }
+
 
         .controls button {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);
@@ -218,6 +235,14 @@ export default function ClockPage() {
         @keyframes aurora-flow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes neon-color-shift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 50% 100%; }
+            50% { background-position: 100% 50%; }
+            75% { background-position: 50% 0%; }
             100% { background-position: 0% 50%; }
         }
       `}</style>
