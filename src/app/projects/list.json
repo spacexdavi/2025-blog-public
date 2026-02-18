@@ -2,7 +2,7 @@
 	{
 		"name": "RSA非对称文本加密软件",
 		"year": 2026,
-		"image": "blob:https://www.spacexdavid.cn/3848fe05-1d87-4943-978b-d7cb9946a9f0",
+		"image": "/images/project/87796f2ab6f751a3.webp",
 		"url": "https://github.com/spacexdavi/RSA-",
 		"description": "基于SHA256的RSA非对称文本加密软件",
 		"tags": [
