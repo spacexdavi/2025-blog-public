@@ -6,7 +6,7 @@ const THEMES = [
   { id: "matrix", name: "黑客帝国" },
   { id: "ios-lock", name: "iOS 锁屏" },
   { id: "watch-aurora", name: "Apple Watch 极光" },
-  { id: "standby-red", name: "待机模式" },
+  { id: "standby-red", name: "待机红" },
 ];
 
 export default function ClockPage() {
@@ -19,7 +19,6 @@ export default function ClockPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const currentTheme = THEMES[currentThemeIndex];
 
-  // 1. 初始化
   useEffect(() => {
     setMounted(true);
     const updateTime = () => setTime(new Date());
@@ -28,7 +27,7 @@ export default function ClockPage() {
     return () => clearInterval(timer);
   }, []);
 
-  // 2. 永不息屏 (Wake Lock)
+  // 永不息屏
   useEffect(() => {
     let wakeLock: any = null;
     const requestWakeLock = async () => {
@@ -44,14 +43,14 @@ export default function ClockPage() {
     return () => { if (wakeLock) wakeLock.release(); };
   }, []);
 
-  // 3. 全屏监听
+  // 全屏监听
   useEffect(() => {
     const handleFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  // 4. Matrix 动画修复
+  // Matrix 动画
   useEffect(() => {
     if (!mounted || currentTheme.id !== "matrix" || !canvasRef.current) return;
 
@@ -71,13 +70,13 @@ export default function ClockPage() {
     const drops: number[] = new Array(columns).fill(1);
 
     const draw = () => {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#00ff99";
+      ctx.fillStyle = "#0F0";
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        const text = Math.random() > 0.5 ? "0" : "1";
+        const text = String.fromCharCode(0x30A0 + Math.random() * 96); // 使用片假名更有原版感觉
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
@@ -111,36 +110,47 @@ export default function ClockPage() {
   return (
     <div
       ref={clockRef}
+      onDoubleClick={toggleFullscreen} // 双击切换全屏
       className={`clock-root theme-${currentTheme.id}`}
       style={{
         height: "100vh",
         width: "100vw",
         background: "black",
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
-        position: "relative"
+        position: "relative",
+        cursor: "pointer"
       }}
     >
-      {/* 动画 Canvas */}
+      {/* 极光背景 (仅在 Watch 模式显示) */}
+      {currentTheme.id === "watch-aurora" && <div className="aurora-bg" />}
+
+      {/* Matrix Canvas */}
       <canvas
         ref={canvasRef}
         style={{
           position: "absolute",
           inset: 0,
-          opacity: currentTheme.id === "matrix" ? 0.6 : 0,
+          opacity: currentTheme.id === "matrix" ? 0.8 : 0,
           pointerEvents: "none",
           transition: "opacity 1s"
         }}
       />
 
-      {/* 时间显示区 */}
+      {/* 时间显示 */}
       <div className="time-display" style={{ zIndex: 1, textAlign: "center" }}>
         <span className="hours-mins">{hours}:{minutes}</span>
         {currentTheme.id !== "ios-lock" && <span className="seconds">:{seconds}</span>}
       </div>
+
+      {/* 底部提示 (全屏时淡出) */}
+      {!isFullscreen && (
+        <div className="hint" style={{ position: "absolute", bottom: "100px", color: "rgba(255,255,255,0.3)", fontSize: "12px" }}>
+          双击屏幕切换全屏
+        </div>
+      )}
 
       {/* 交互按钮 */}
       <div className="controls" style={{ 
@@ -150,48 +160,62 @@ export default function ClockPage() {
         opacity: isFullscreen ? 0 : 1,
         transition: "opacity 0.3s"
       }}>
-        <button onClick={() => setCurrentThemeIndex((i) => (i + 1) % THEMES.length)}>
+        <button onClick={(e) => { e.stopPropagation(); setCurrentThemeIndex((i) => (i + 1) % THEMES.length); }}>
           风格: {currentTheme.name}
-        </button>
-        <button onClick={toggleFullscreen} style={{ marginLeft: "10px" }}>
-          {isFullscreen ? "退出全屏" : "全屏"}
         </button>
       </div>
 
-      {/* 核心样式注入 */}
       <style>{`
-        .time-display { color: white; transition: all 0.5s; font-variant-numeric: tabular-nums; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+        .time-display { color: white; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); font-variant-numeric: tabular-nums; }
         
+        /* Matrix 增强：使用更科幻的字体和发光 */
         .theme-matrix .time-display { 
-            font-family: monospace; font-size: 15vw; color: #00ff99; 
-            text-shadow: 0 0 20px #00ff99; 
+            font-family: 'Orbitron', 'Courier New', monospace; 
+            font-size: 15vw; color: #00ff41; 
+            text-shadow: 0 0 10px #00ff41, 0 0 30px rgba(0,255,65,0.5);
+            letter-spacing: -2px;
         }
         
+        /* iOS 锁屏：追求极致轻盈 */
         .theme-ios-lock .time-display { 
-            font-family: -apple-system, system-ui; font-weight: 200; font-size: 20vw; 
+            font-family: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif; 
+            font-weight: 200; font-size: 24vw; 
+            letter-spacing: -5px;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
         }
 
+        /* Watch 极光：流动的渐变背景 */
         .theme-watch-aurora .time-display {
-            font-size: 18vw; font-weight: 900;
-            background: linear-gradient(45deg, #ff9a9e, #a18cd1, #4facfe);
-            background-size: 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: aurora 5s infinite;
+            font-size: 18vw; font-weight: 800;
+            color: white;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .aurora-bg {
+            position: absolute; inset: 0;
+            background: linear-gradient(125deg, #2c3e50, #27ae60, #2980b9, #8e44ad);
+            background-size: 400% 400%;
+            animation: aurora-flow 15s ease infinite;
+            filter: blur(60px); opacity: 0.6;
         }
 
+        /* 待机模式：浓郁的红色氛围 */
         .theme-standby-red .time-display {
-            font-family: sans-serif; font-weight: 800; font-size: 22vw;
-            color: #ff3b30; text-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+            font-family: "Inter", system-ui, sans-serif; 
+            font-weight: 700; font-size: 25vw;
+            color: #ff2d55; 
+            filter: drop-shadow(0 0 40px rgba(255, 45, 85, 0.6));
         }
 
         .controls button {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer;
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);
+            color: white; padding: 10px 24px; border-radius: 30px; cursor: pointer;
+            backdrop-filter: blur(15px); transition: 0.3s;
         }
+        .controls button:hover { background: rgba(255,255,255,0.15); }
 
-        @keyframes aurora {
+        @keyframes aurora-flow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
